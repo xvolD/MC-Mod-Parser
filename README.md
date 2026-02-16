@@ -1,6 +1,8 @@
-# React + Vite + Tailwind CSS
+# MC Mod Parser
 
-Modern React application built with Vite and styled with Tailwind CSS.
+Modern React application for parsing Minecraft mods, built with Vite and styled with Tailwind CSS.
+
+🌐 **Live Demo**: [https://awpazx.github.io/MC-Mod-Parser/](https://awpazx.github.io/MC-Mod-Parser/)
 
 ## Tech Stack
 
@@ -42,6 +44,14 @@ npm run build
 ```bash
 npm run preview
 ```
+
+### Deploy to GitHub Pages
+
+```bash
+npm run deploy
+```
+
+The application will be built and deployed to GitHub Pages automatically.
 
 ## Project Structure
 
