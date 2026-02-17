@@ -114,6 +114,7 @@ export async function searchModrinth(
     limit: '20',
     offset: String(offset),
     facets: JSON.stringify(facets),
+    index: 'relevance', // Sort by relevance instead of downloads
   });
 
   const res = await fetch(`${MODRINTH_API}/search?${params}`, {
@@ -135,7 +136,7 @@ export async function searchModrinth(
     contentType,
   }));
 
-  // Sort by relevance if there's a search query
+  // Modrinth already sorts by relevance, but we apply additional client-side sorting
   const sortedMods = query.trim() ? sortByRelevance(mods, query) : mods;
 
   return {
