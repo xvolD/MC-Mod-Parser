@@ -94,14 +94,14 @@ export function AuthModal({ onClose, onSuccess, language, t }: AuthModalProps) {
         // Формирование ссылки для восстановления
         const resetLink = `${window.location.origin}${window.location.pathname}?reset=${token}`;
         
-        // Инициализация EmailJS (если еще не инициализирован)
-        emailjs.init('YOUR_PUBLIC_KEY'); // Замените на ваш Public Key
+        // Инициализация EmailJS
+        emailjs.init('iSL_LvH8RJqVYmHqH');
         
         // Отправка email через EmailJS
         try {
           const response = await emailjs.send(
-            'service_xvoldata', // Замените на ваш Service ID
-            'template_reset',   // Замените на ваш Template ID
+            'service_xvoldata',
+            'template_xvoldata',
             {
               to_email: result.email,
               to_name: emailOrUsername,
@@ -119,7 +119,8 @@ export function AuthModal({ onClose, onSuccess, language, t }: AuthModalProps) {
           }, 5000);
         } catch (emailError: any) {
           console.error('Email sending failed:', emailError);
-          setError(`Ошибка отправки email: ${emailError.text || emailError.message || 'Неизвестная ошибка'}. Проверьте настройки EmailJS.`);
+          // Fallback: показываем ссылку если email не отправился
+          setSuccess(`Не удалось отправить email. Используйте эту ссылку для восстановления: ${resetLink}`);
         }
       } else {
         setError(result.message);
