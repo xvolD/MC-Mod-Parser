@@ -4,12 +4,12 @@
 
 ### Powerful Minecraft Mod Search & Management Tool
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-brightgreen?style=for-the-badge)](https://xvold.github.io/MC-Mod-Parser/)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-brightgreen?style=for-the-badge)](https://xvold.github.io/xVolData/)
 [![React](https://img.shields.io/badge/React-19.2.3-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-7.2.4-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 
-<a href="https://xvold.github.io/MC-Mod-Parser/" target="_blank">
+<a href="https://xvold.github.io/xVolData/" target="_blank">
   <img src="https://img.shields.io/badge/🚀_Launch_xVolData-Click_Here-blue?style=for-the-badge&labelColor=1a1b26&color=7aa2f7" alt="Launch xVolData" />
 </a>
 
@@ -105,6 +105,6 @@ MIT
 
 Made by [xvolD](https://github.com/xvolD) with ❤️ for the Minecraft community
 
-[🌐 Launch App](https://xvold.github.io/MC-Mod-Parser/) • [🐛 Report Bug](https://github.com/xvolD/MC-Mod-Parser/issues) • [⭐ Star on GitHub](https://github.com/xvolD/MC-Mod-Parser)
+[🌐 Launch App](https://xvold.github.io/xVolData/) • [🐛 Report Bug](https://github.com/xvolD/xVolData/issues) • [⭐ Star on GitHub](https://github.com/xvolD/xVolData)
 
 </div>
