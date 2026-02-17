@@ -1,71 +1,115 @@
-# MC Mod Parser
+<div align="center">
 
-Modern React application for parsing Minecraft mods, built with Vite and styled with Tailwind CSS.
+# 🎮 MC Mod Parser
 
-## Tech Stack
+### Удобный поиск и управление модами для Minecraft
 
-- React 19.2.3
-- TypeScript 5.9.3
-- Vite 7.2.4
-- Tailwind CSS 4.1.17
-- Lucide React (icons)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-brightgreen?style=for-the-badge)](https://xvold.github.io/MC-Mod-Parser/)
+[![React](https://img.shields.io/badge/React-19.2.3-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-7.2.4-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 
-## Getting Started
+</div>
 
-### Prerequisites
+---
 
-- Node.js (v18 or higher)
-- npm or yarn
+## ✨ Возможности
 
-### Installation
+- 🔍 **Поиск модов** на Modrinth и CurseForge
+- 📦 **Управление списком** модов с выбором версий
+- 📥 **Импорт модлистов** из различных форматов (JSON, TXT, CSV)
+- 💾 **Экспорт списков** для удобного обмена
+- 🎯 **Фильтрация** по версии игры и загрузчику (Fabric, Forge, NeoForge, Quilt)
+- 🔗 **Прямые ссылки** на скачивание модов
+- 🌙 **Темная тема** для комфортной работы
+
+## 🚀 Быстрый старт
+
+### Требования
+
+- Node.js (v18 или выше)
+- npm или yarn
+
+### Установка
 
 ```bash
 npm install
 ```
 
-### Development
+### Разработка
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Откройте [http://localhost:5173](http://localhost:5173) в браузере.
 
-### Build
+### Сборка
 
 ```bash
 npm run build
 ```
 
-### Preview Production Build
+### Предпросмотр продакшн-сборки
 
 ```bash
 npm run preview
 ```
 
-### Deploy to GitHub Pages
+### Деплой на GitHub Pages
 
 ```bash
 npm run deploy
 ```
 
-The application will be built and deployed to GitHub Pages automatically.
+Приложение будет автоматически собрано и задеплоено на GitHub Pages.
 
-## Project Structure
+## 🛠️ Технологии
+
+| Технология | Версия | Описание |
+|------------|--------|----------|
+| React | 19.2.3 | UI библиотека |
+| TypeScript | 5.9.3 | Типизация |
+| Vite | 7.2.4 | Сборщик |
+| Tailwind CSS | 4.1.17 | Стилизация |
+| Lucide React | latest | Иконки |
+
+## 📁 Структура проекта
 
 ```
+MC-Mod-Parser/
 ├── src/
-│   ├── App.tsx          # Main application component
-│   ├── main.tsx         # Application entry point
-│   ├── index.css        # Global styles
+│   ├── App.tsx          # Главный компонент приложения
+│   ├── api.ts           # API для работы с Modrinth и CurseForge
+│   ├── main.tsx         # Точка входа
+│   ├── index.css        # Глобальные стили
 │   └── utils/
-│       └── cn.ts        # Utility functions
+│       └── cn.ts        # Утилиты
+├── .github/
+│   └── workflows/
+│       └── deploy.yml   # GitHub Actions для автодеплоя
 ├── index.html
 ├── package.json
 ├── tsconfig.json
 └── vite.config.ts
 ```
 
-## License
+## 🌐 API
+
+Приложение использует официальные API:
+- [Modrinth API](https://docs.modrinth.com/) - поиск и получение информации о модах
+- [CurseForge API](https://docs.curseforge.com/) - дополнительный источник модов (требуется API ключ)
+
+## 📝 Лицензия
 
 MIT
+
+---
+
+<div align="center">
+
+Сделано с ❤️ для сообщества Minecraft
+
+[🌐 Открыть приложение](https://xvold.github.io/MC-Mod-Parser/) • [🐛 Сообщить об ошибке](https://github.com/xvolD/MC-Mod-Parser/issues)
+
+</div>
