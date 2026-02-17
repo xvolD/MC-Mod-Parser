@@ -122,6 +122,8 @@ export const translations: Record<Language, Record<string, string>> = {
     more: 'ещё',
     importFromFileTitle: 'Импорт из файла',
     importFromFileDesc: '.txt, .json, .csv — перетащите или выберите файл',
+    previous: 'Назад',
+    next: 'Вперёд',
   },
   en: {
     appTitle: 'xVolData',
@@ -237,6 +239,8 @@ export const translations: Record<Language, Record<string, string>> = {
     more: 'more',
     importFromFileTitle: 'Import from file',
     importFromFileDesc: '.txt, .json, .csv — drag or select file',
+    previous: 'Previous',
+    next: 'Next',
   },
   de: {
     appTitle: 'xVolData',
@@ -352,6 +356,8 @@ export const translations: Record<Language, Record<string, string>> = {
     more: 'mehr',
     importFromFileTitle: 'Aus Datei importieren',
     importFromFileDesc: '.txt, .json, .csv — ziehen oder Datei auswählen',
+    previous: 'Zurück',
+    next: 'Weiter',
   },
 };
 

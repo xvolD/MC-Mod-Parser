@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import {
   Search, Download, ExternalLink, X, ChevronDown,
   Package, Layers, Trash2, FileDown, Copy, Check,
@@ -1120,6 +1120,8 @@ export function App() {
   const [totalResults, setTotalResults] = useState(0);
   const [searching, setSearching] = useState(false);
   const [searchError, setSearchError] = useState('');
+  const [currentPage, setCurrentPage] = useState(0);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const [selectedMods, setSelectedMods] = useState<SelectedMod[]>([]);
 
@@ -1130,32 +1132,33 @@ export function App() {
     error: string;
   } | null>(null);
 
-  const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   // Search
   const doSearch = useCallback(
-    async (q: string, src: Source, gv: string, ld: string, key: string, ct: ContentType) => {
+    async (q: string, src: Source, gv: string, ld: string, key: string, ct: ContentType, page = 0) => {
       if (!q.trim() && !gv) {
         setResults([]);
         setTotalResults(0);
+        setHasSearched(false);
         return;
       }
 
       setSearching(true);
       setSearchError('');
+      setHasSearched(true);
 
       try {
         let result: { mods: UnifiedMod[]; total: number };
         if (src === 'modrinth') {
-          result = await searchModrinth(q, gv, ld, 0, ct);
+          result = await searchModrinth(q, gv, ld, page * 20, ct);
         } else {
           if (!key) {
             throw new Error(t('cfApiKeyRequired'));
           }
-          result = await searchCurseForge(q, gv, ld, key, 0, ct);
+          result = await searchCurseForge(q, gv, ld, key, page * 20, ct);
         }
         setResults(result.mods);
         setTotalResults(result.total);
+        setCurrentPage(page);
       } catch (err) {
         setSearchError(err instanceof Error ? err.message : t('searchError'));
         setResults([]);
@@ -1168,18 +1171,16 @@ export function App() {
   );
 
   const handleSearch = useCallback(() => {
-    doSearch(query, source, gameVersion, loader, cfApiKey, contentType);
+    setCurrentPage(0);
+    doSearch(query, source, gameVersion, loader, cfApiKey, contentType, 0);
   }, [query, source, gameVersion, loader, cfApiKey, contentType, doSearch]);
 
-  useEffect(() => {
-    if (searchTimeout.current) clearTimeout(searchTimeout.current);
-    searchTimeout.current = setTimeout(() => {
-      doSearch(query, source, gameVersion, loader, cfApiKey, contentType);
-    }, 500);
-    return () => {
-      if (searchTimeout.current) clearTimeout(searchTimeout.current);
-    };
+  const handlePageChange = useCallback((newPage: number) => {
+    doSearch(query, source, gameVersion, loader, cfApiKey, contentType, newPage);
   }, [query, source, gameVersion, loader, cfApiKey, contentType, doSearch]);
+
+  // Remove automatic search on input change
+  // useEffect removed - search only on button click
 
   // View versions
   const handleViewVersions = async (mod: UnifiedMod) => {
@@ -1421,6 +1422,8 @@ export function App() {
                   setContentType(type.value);
                   setResults([]);
                   setTotalResults(0);
+                  setHasSearched(false);
+                  setCurrentPage(0);
                 }}
                 className={cn(
                   'rounded-lg px-4 py-2 text-sm font-medium transition',
@@ -1542,21 +1545,80 @@ export function App() {
             )}
 
             {results.length > 0 && (
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                {results.map((mod) => (
-                  <ModCard
-                    key={`${mod.source}-${mod.id}`}
-                    mod={mod}
-                    isSelected={isModSelected(mod)}
-                    onToggle={() => toggleMod(mod)}
-                    onViewVersions={() => handleViewVersions(mod)}
-                    t={t}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                  {results.map((mod) => (
+                    <ModCard
+                      key={`${mod.source}-${mod.id}`}
+                      mod={mod}
+                      isSelected={isModSelected(mod)}
+                      onToggle={() => toggleMod(mod)}
+                      onViewVersions={() => handleViewVersions(mod)}
+                      t={t}
+                    />
+                  ))}
+                </div>
+
+                {/* Pagination */}
+                {totalResults > 20 && (
+                  <div className="mt-6 flex items-center justify-center gap-2">
+                    <button
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 0 || searching}
+                      className="inline-flex items-center gap-1 rounded-lg bg-slate-800 px-3 py-2 text-sm text-slate-300 transition hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      <ChevronDown className="h-4 w-4 rotate-90" />
+                      {t('previous') || 'Назад'}
+                    </button>
+                    
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: Math.min(5, Math.ceil(totalResults / 20)) }, (_, i) => {
+                        const totalPages = Math.ceil(totalResults / 20);
+                        let pageNum: number;
+                        
+                        if (totalPages <= 5) {
+                          pageNum = i;
+                        } else if (currentPage < 3) {
+                          pageNum = i;
+                        } else if (currentPage > totalPages - 3) {
+                          pageNum = totalPages - 5 + i;
+                        } else {
+                          pageNum = currentPage - 2 + i;
+                        }
+                        
+                        return (
+                          <button
+                            key={pageNum}
+                            onClick={() => handlePageChange(pageNum)}
+                            disabled={searching}
+                            className={cn(
+                              'h-9 w-9 rounded-lg text-sm font-medium transition',
+                              currentPage === pageNum
+                                ? 'bg-emerald-600 text-white'
+                                : 'bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white',
+                              searching && 'opacity-40 cursor-not-allowed'
+                            )}
+                          >
+                            {pageNum + 1}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <button
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage >= Math.ceil(totalResults / 20) - 1 || searching}
+                      className="inline-flex items-center gap-1 rounded-lg bg-slate-800 px-3 py-2 text-sm text-slate-300 transition hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      {t('next') || 'Вперёд'}
+                      <ChevronDown className="h-4 w-4 -rotate-90" />
+                    </button>
+                  </div>
+                )}
+              </>
             )}
 
-            {!searching && !searchError && results.length === 0 && query && (
+            {!searching && !searchError && results.length === 0 && hasSearched && (
               <div className="rounded-xl border border-slate-800 bg-slate-800/40 py-16 text-center">
                 <Search className="mx-auto h-10 w-10 text-slate-600" />
                 <p className="mt-3 text-sm text-slate-400">{t('nothingFound')}</p>
@@ -1564,7 +1626,7 @@ export function App() {
               </div>
             )}
 
-            {!searching && !searchError && results.length === 0 && !query && (
+            {!searching && !searchError && results.length === 0 && !hasSearched && (
               <div className="rounded-xl border border-slate-800 bg-slate-800/40 py-16 text-center">
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-600/20 to-emerald-800/20">
                   <Search className="h-8 w-8 text-emerald-600" />
