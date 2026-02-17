@@ -4,7 +4,7 @@ import {
   Package, Layers, Trash2, FileDown, Copy, Check,
   AlertCircle, Loader2, Info, Star, Key, RefreshCw,
   Upload, FileText, CheckCircle2, XCircle, Clock,
-  FolderOpen,
+  FolderOpen, Languages,
 } from 'lucide-react';
 import {
   type UnifiedMod, type UnifiedFile, type ImportResult,
@@ -15,6 +15,7 @@ import {
   formatDownloads, formatSize, formatDate,
 } from './api';
 import { cn } from './utils/cn';
+import { type Language, LANGUAGES, getTranslation } from './i18n';
 
 type Source = 'modrinth' | 'curseforge';
 
@@ -1095,6 +1096,10 @@ create`}
 // ==================== MAIN APP ====================
 
 export function App() {
+  const [language, setLanguage] = useState<Language>('ru');
+  const [showLangMenu, setShowLangMenu] = useState(false);
+  const t = (key: string) => getTranslation(language, key);
+  
   const [source, setSource] = useState<Source>('modrinth');
   const [gameVersion, setGameVersion] = useState('1.20.1');
   const [loader, setLoader] = useState('fabric');
@@ -1285,6 +1290,42 @@ export function App() {
           </div>
 
           <div className="flex items-center gap-2">
+            {/* Language Switcher */}
+            <div className="relative">
+              <button
+                onClick={() => setShowLangMenu(!showLangMenu)}
+                className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-700 bg-slate-800 text-xl transition hover:border-slate-600 hover:bg-slate-700"
+                title="Change language"
+              >
+                {LANGUAGES.find(l => l.code === language)?.flag || '🌐'}
+              </button>
+              {showLangMenu && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setShowLangMenu(false)} />
+                  <div className="absolute right-0 top-full z-50 mt-2 w-48 rounded-lg border border-slate-700 bg-slate-800 py-1 shadow-xl">
+                    {LANGUAGES.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => {
+                          setLanguage(lang.code);
+                          setShowLangMenu(false);
+                        }}
+                        className={cn(
+                          'flex w-full items-center gap-3 px-4 py-2 text-left text-sm transition',
+                          language === lang.code
+                            ? 'bg-emerald-600/20 text-emerald-400'
+                            : 'text-slate-300 hover:bg-slate-700'
+                        )}
+                      >
+                        <span className="text-xl">{lang.flag}</span>
+                        <span>{lang.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+
             {/* Import button */}
             <button
               onClick={() => setShowImportModal(true)}
